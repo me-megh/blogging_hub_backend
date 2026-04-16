@@ -56,7 +56,7 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     # Add any other authentication backends if needed
 ]
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['https://blogging-hub-backend.onrender.com','127.0.0.1', 'localhost']
 ROOT_URLCONF = 'backend.urls'
 DEBUG = True
 STATIC_URL = '/static/'
