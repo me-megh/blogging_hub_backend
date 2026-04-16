@@ -1,0 +1,29 @@
+<!-- blog/templates/blog/view_blog.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }}</title>
+</head>
+<body>
+    <h1>{{ post.title }}</h1>
+
+    <!-- Format the created_at field -->
+    <p>Posted on: {{ post.created_at|date:"F j, Y, g:i a" }}</p>
+
+    <!-- Display the description -->
+    <p>{{ post.description }}</p>
+
+    <!-- Check if the post has an image and display it -->
+    {% if post.image %}
+        <img src="{{ post.image.url }}" alt="{{ post.title }}">
+    {% endif %}
+
+    <!-- Display author -->
+    <p>Author: {{ post.author.username }}</p>
+
+    <!-- Link to go back to the blog list -->
+    <a href="{% url 'blog_list' %}">Back to Blog List</a>
+</body>
+</html>

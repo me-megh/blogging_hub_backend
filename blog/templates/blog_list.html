@@ -1,0 +1,22 @@
+<!-- blog/templates/blog/blog_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog List</title>
+</head>
+<body>
+    <h1>All Blog Posts</h1>
+    <a href="{% url 'create_blog' %}">Create New Blog Post</a>
+    <ul>
+        {% for post in posts %}
+            <li>
+                <a href="{% url 'view_blog' post.pk %}">{{ post.title }}</a> - {{ post.created_at }}
+                <a href="{% url 'update_blog' post.pk %}">Edit</a>
+                <a href="{% url 'delete_blog' post.pk %}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        /* Styling to align register/login links on the top-right */
+        .auth-links {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+        }
+        
+        /* Basic styling for blog posts */
+        .blog-post {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        
+        .blog-post img {
+            width: 50px;
+            height: 50px;
+            float: left;
+            margin-right: 15px;
+        }
+
+        .blog-post h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        
+        .blog-post p {
+            font-size: 1em;
+        }
+        
+        .blog-post .author {
+            font-size: 0.9em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Blogging Hub</h1>
+    
+    <!-- Register / Login links in the top-right corner -->
+    <div class="auth-links">
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'register' %}">Register</a> | 
+            <a href="{% url 'login' %}">Login</a>
+        {% endif %}
+    </div>
+
+    <!-- Displaying blog posts -->
+    <h2>All Blog Posts</h2>
+    {% if posts %}
+        <div class="blog-list">
+            {% for post in posts %}
+                <div class="blog-post">
+                    <!-- Use a default image if the blog post doesn't have an image -->
+                    <img src="{% if post.image %}{{ post.image.url }}{% else %}https://via.placeholder.com/50{% endif %}" alt="{{ post.title }}">
+                    <h3><a href="{% url 'view_blog' post.pk %}">{{ post.title }}</a></h3>
+                    <p>{{ post.description|truncatewords:30 }}</p>
+                    <p class="author">Author: {{ post.author.username }} | Date: {{ post.created_at|date:"Y-m-d" }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No blog posts available.</p>
+    {% endif %}
+    
+    <footer>
+        <p>Enjoy exploring our blog posts!</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+</head>
+<body>
+    <h1>Welcome, {{ user.username }}!</h1>
+    <p>Your email: {{ user.email }}</p>
+
+    <hr>
+
+    <h2>Your Blog Posts</h2>
+    {% if user_posts %}
+        <div>
+            {% for post in user_posts %}
+                <div style="border: 1px solid #ddd; padding: 10px; margin-bottom: 20px;">
+                    <!-- Blog Post Date -->
+                    <p><strong>Published on:</strong> {{ post.created_at|date:"F d, Y" }}</p>
+
+                    <!-- Blog Post Image -->
+                    {% if post.image %}
+                        <img src="{{ post.image.url }}" alt="Blog Image" style="max-width: 150px; float: left; margin-right: 10px;">
+                    {% endif %}
+
+                    <!-- Blog Title -->
+                    <h3><a href="{% url 'view_blog' post.pk %}">{{ post.title }}</a></h3>
+
+                    <!-- Blog Description -->
+                    <p><strong>Description:</strong> {{ post.description }}</p>
+
+                    <!-- Author Name -->
+                    <p><strong>Author:</strong> {{ post.author.username }}</p>
+
+                    <div style="clear: both;"></div> <!-- To clear floated image -->
+
+                    <!-- Edit and Delete links -->
+                    <a href="{% url 'edit_blog' post.pk %}">Edit</a> | 
+                    <a href="{% url 'delete_blog' post.pk %}">Delete</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You haven't created any blog posts yet.</p>
+    {% endif %}
+
+    <hr>
+
+    <a href="{% url 'create_blog' %}">Create a New Blog Post</a>
+
+    <hr>
+
+    <!-- Logout Form -->
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+</body>
+</html>
