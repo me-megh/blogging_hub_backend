@@ -1,4 +1,6 @@
+import os
 from pathlib import Path
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -57,28 +59,29 @@ AUTHENTICATION_BACKENDS = [
     # Add any other authentication backends if needed
 ]
 ROOT_URLCONF = 'backend.urls'
-DEBUG = True
+DEBUG = False
 STATIC_URL = '/static/'
 LOGOUT_REDIRECT_URL = '/' 
-SECRET_KEY ='jeg0^ihr-8+78=5zl_&1!((c0%s#w@8am==ms#hf-y(sxl)1ez'
+SECRET_KEY =os.environ.get('DJANGO_SECRET_KEY', 'jeg0^ihr-8+78=5zl_&1!((c0%s#w@8am==ms#hf-y(sxl)1ez'),
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',  # Add your frontend URL here
+    'http://localhost:3000', 
+    "https://blogging-hub-five.vercel.app" 
 ]
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
     'https://blogging-hub-five.vercel.app/'
 ]
 CSRF_COOKIE_HTTPONLY = False
-CSRF_COOKIE_SECURE = False  # यह False रखना चाहिए जब आप डेवलपमेंट पर काम कर रहे हों
+CSRF_COOKIE_SECURE = True  # यह False रखना चाहिए जब आप डेवलपमेंट पर काम कर रहे हों
 CORS_ALLOW_CREDENTIALS = True
 SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_NAME = 'csrftoken' 
-SESSION_COOKIE_SECURE = False ,
+SESSION_COOKIE_SECURE = True ,
 CSRF_COOKIE_SAMESITE = 'None',
 ALLOWED_HOSTS = [
     'blogging-hub-backend.onrender.com',  # Your backend URL on Render
-    'blogging-hub-five.vercel.app/',   # Your frontend URL on Vercel
-    '127.0.0.1',                  # Local development
-    'localhost',  
-    '0.0.0.0'    ,            # Local development
+    'blogging-hub-five.vercel.app',       # Your frontend URL on Vercel
+    '127.0.0.1',                         # Local development
+    'localhost',                         
+    '0.0.0.0',                           # Local development
 ]
