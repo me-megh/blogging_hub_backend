@@ -38,7 +38,7 @@ class UserSerializer(serializers.ModelSerializer):
 class BlogPostSerializer(serializers.ModelSerializer):
     # Ensure that the 'author' field is populated with the username instead of id
     author = serializers.CharField(source='author.username', read_only=True)
-    image = serializers.ImageField(required=False, allow_null=True)  # Handling image field
+    image = serializers.ImageField(required=False, allow_null=True, use_url=True)  # Handling image field
 
     class Meta:
         model = BlogPost
@@ -57,4 +57,13 @@ class BlogPostSerializer(serializers.ModelSerializer):
         # Save and return the updated instance
         instance.save()
         return instance
-    
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        request = self.context.get('request')
+
+        if instance.image:
+         representation['image'] = (
+            request.build_absolute_uri(instance.image.url)
+            if request else instance.image.url
+        )
+        return representation

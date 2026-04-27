@@ -33,7 +33,7 @@ class BlogPostList(APIView):
 
     def get(self, request, format=None):
         posts = BlogPost.objects.all()
-        serializer = BlogPostSerializer(posts, many=True)
+        serializer = BlogPostSerializer(posts, many=True, context={'request': request})  # Pass request context
         return Response(serializer.data)
 
 def csrf_token_view(request):
@@ -81,7 +81,7 @@ class CreateBlogView(APIView):
         data['author'] = author.id  # You still need the user ID to associate with ForeignKey
         
         # Serialize and save the blog post
-        serializer = BlogPostSerializer(data=data)
+        serializer = BlogPostSerializer(data=data, context={'request': request})
         if serializer.is_valid():
             blog_post = serializer.save(author=author)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -245,7 +245,7 @@ def update_blog(request, pk):
         return Response({"error": "You can only update your own posts."}, status=status.HTTP_403_FORBIDDEN)
 
     # Update the blog post with the full data provided
-    serializer = BlogPostSerializer(blog_post, data=request.data)
+    serializer = BlogPostSerializer(blog_post, data=request.data,context={'request': request})
 
     if serializer.is_valid():
         serializer.save()  # Save the updated blog post
@@ -271,14 +271,14 @@ def update_blog(request, pk):
 class BlogPostList(APIView):
     def get(self, request, format=None):
         posts = BlogPost.objects.all()
-        serializer = BlogPostSerializer(posts, many=True)
+        serializer = BlogPostSerializer(posts, many=True,context={'request': request})
         return Response(serializer.data)
 
 # View to get a single blog post by ID
 class BlogPostDetail(APIView):
     def get(self, request, pk, format=None):
         post = BlogPost.objects.get(pk=pk)
-        serializer = BlogPostSerializer(post)
+        serializer = BlogPostSerializer(post, context={'request': request})
         return Response(serializer.data)
 
 # API View for user registration
@@ -347,7 +347,7 @@ class ProfileAPIView(APIView):
         user_posts = BlogPost.objects.filter(author=user)
         
         # Serialize the posts
-        posts_data = BlogPostSerializer(user_posts, many=True).data
+        posts_data = BlogPostSerializer(user_posts, many=True,context={'request': request}).data
 
         # Log the authenticated user and their posts count for debugging
         print(f"User {user.username} is authenticated and has {len(posts_data)} posts.")
