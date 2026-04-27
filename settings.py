@@ -17,11 +17,15 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Set MEDIA_URL to make it accessible via the browser
-MEDIA_URL = '/media/'
 
-# Correct the MEDIA_ROOT path (this is where Django will look for images)
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
-MEDIA_ROOT = BASE_DIR / 'media' 
+# for local 
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = BASE_DIR / 'media' 
+#DEBUG = True
+
+# for production 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEBUG = False
 TEMPLATES = [
     {
